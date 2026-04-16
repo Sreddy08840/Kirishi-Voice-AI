@@ -1,0 +1,114 @@
+const { QdrantClient } = require('@qdrant/js-client-rest');
+const crypto = require('crypto');
+const { generateEmbedding } = require('../services/aiService');
+
+const qdrantClient = new QdrantClient({
+  url: process.env.QDRANT_URL,
+  apiKey: process.env.QDRANT_API_KEY
+});
+
+// Using agreed upon collection name
+const COLLECTION_NAME = "agri_kb";
+
+async function initDB() {
+  try {
+    if (!process.env.QDRANT_URL) {
+      console.log("QDRANT_URL is not set. Skipping Qdrant setup.");
+      return;
+    }
+    
+    const result = await qdrantClient.getCollections();
+    const exists = result.collections.some(c => c.name === COLLECTION_NAME);
+    
+    if (!exists) {
+      // User explicitly requested 1536 dimensions
+      await qdrantClient.createCollection(COLLECTION_NAME, {
+        vectors: { size: 1536, distance: "Cosine" } 
+      });
+      console.log(`Collection ${COLLECTION_NAME} created successfully.`);
+    } else {
+      console.log(`Collection ${COLLECTION_NAME} already exists.`);
+    }
+  } catch (error) {
+    console.error("Error initializing Qdrant:", error);
+  }
+}
+
+async function insertData(text, metadata) {
+  try {
+    if (!process.env.QDRANT_URL) return;
+    
+    const embedding = await generateEmbedding(text);
+    const pointId = crypto.randomUUID();
+
+    await qdrantClient.upsert(COLLECTION_NAME, {
+      wait: true,
+      points: [
+        {
+          id: pointId,
+          vector: embedding,
+          payload: {
+            text: text,
+            ...metadata
+          }
+        }
+      ]
+    });
+    console.log(`Inserted data into Qdrant: ${metadata.title}`);
+  } catch (error) {
+    console.error("Error inserting data into Qdrant:", error);
+  }
+}
+
+async function searchData(query, limit = 3) {
+  try {
+    if (!process.env.QDRANT_URL) return [];
+    
+    const queryEmbedding = await generateEmbedding(query);
+    
+    const searchResult = await qdrantClient.search(COLLECTION_NAME, {
+      vector: queryEmbedding,
+      limit: limit,
+      with_payload: true
+    });
+    
+    return searchResult;
+  } catch (error) {
+    console.error("Error searching in Qdrant:", error);
+    return [];
+  }
+}
+
+// Function to seed sample agricultural data
+async function seedSampleData() {
+  console.log("Starting to seed sample agricultural data...");
+
+  const samples = [
+    {
+      text: "PM Kisan Samman Nidhi (PM-KISAN) is a central sector scheme that provides an income support of ₹6,000 per year in three equal installments to all landholding farmer families.",
+      metadata: { title: "PM Kisan Yojana", category: "Govt Scheme" }
+    },
+    {
+      text: "Tomato Early Blight disease causes brown spots on leaves. Solution: Spray Copper Oxychloride (3g/litre) or Mancozeb (2g/litre). Do crop rotation and ensure proper spacing between plants.",
+      metadata: { title: "Tomato disease solution", category: "Pest Management" }
+    },
+    {
+      text: "Today's Mandi Prices: Wheat is trading at ₹2,200 to ₹2,450 per quintal. Rice (Paddy) is trading at ₹2,100 to ₹2,300 per quintal depending on the variety and moisture content.",
+      metadata: { title: "Market price example", category: "Market Updates" }
+    }
+  ];
+
+  for (const sample of samples) {
+    await insertData(sample.text, sample.metadata);
+  }
+  
+  console.log("Sample data seeding completed.");
+}
+
+module.exports = {
+  qdrantClient,
+  initDB,
+  insertData,
+  searchData,
+  seedSampleData
+};

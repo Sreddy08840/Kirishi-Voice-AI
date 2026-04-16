@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishi Voice AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-circle">
+                <!-- Simple leaf icon -->
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" class="leaf-icon">
+                    <path d="M12 22C12 22 5 16.5 5 10C5 6.13401 8.13401 3 12 3C15.866 3 19 6.13401 19 10C19 16.5 12 22 12 22Z" fill="#fff" fill-opacity="0.2" stroke="#fff" stroke-width="2"/>
+                </svg>
+            </div>
+            <h1>Krishi Voice AI</h1>
+            <p>Your Intelligent Agricultural Assistant</p>
+        </header>
+
+        <main>
+            <div class="conversation-box">
+                <div class="message-card user-card">
+                    <span class="label">You Said</span>
+                    <p id="transcript-display">Click 'Start Talking' and ask me anything about farming...</p>
+                </div>
+                <div class="message-card ai-card">
+                    <span class="label">Krishi AI</span>
+                    <p id="response-display">Waiting for your question...</p>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="start-btn" class="mic-btn">
+                    <span class="btn-text">Start Talking</span>
+                    <div class="pulse-ring"></div>
+                </button>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
