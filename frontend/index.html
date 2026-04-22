@@ -392,6 +392,75 @@
             transform: translateZ(10px);
         }
 
+        /* How It Works & Market Prices */
+        .steps-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .step-card {
+            flex: 1;
+            min-width: 250px;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .price-card {
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .price-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .price-header {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .price-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .price-trend {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .positive { color: #4caf50; }
+        .negative { color: #f44336; }
+
         /* Footer */
         footer {
             padding: 40px 5%;
@@ -507,6 +576,55 @@
                 <div class="feature-icon">🍅</div>
                 <h3>Disease Detection</h3>
                 <p>Identify crop diseases quickly and get treatment recommendations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="features" style="background-color: rgba(0,0,0,0.03);">
+        <h2 class="section-title">How It Works</h2>
+        <div class="steps-container">
+            <div class="step-card glass">
+                <div class="step-number">1</div>
+                <h3>Click Mic</h3>
+                <p>Tap the microphone button and select your preferred language.</p>
+            </div>
+            <div class="step-card glass">
+                <div class="step-number">2</div>
+                <h3>Ask Question</h3>
+                <p>Speak naturally about crops, diseases, or market prices.</p>
+            </div>
+            <div class="step-card glass">
+                <div class="step-number">3</div>
+                <h3>Get Answer</h3>
+                <p>Receive an instant spoken response in your chosen language.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Prices Section -->
+    <section id="market" class="features">
+        <h2 class="section-title">Live Market Prices (Mandi)</h2>
+        <div class="grid">
+            <div class="price-card glass">
+                <div class="price-header">Wheat (Godhuma)</div>
+                <div class="price-value">₹2,400 <span style="font-size:1rem;color:var(--text-muted)">/ Qtl</span></div>
+                <div class="price-trend positive">▲ +2.4%</div>
+            </div>
+            <div class="price-card glass">
+                <div class="price-header">Rice (Akki)</div>
+                <div class="price-value">₹3,200 <span style="font-size:1rem;color:var(--text-muted)">/ Qtl</span></div>
+                <div class="price-trend positive">▲ +1.1%</div>
+            </div>
+            <div class="price-card glass">
+                <div class="price-header">Tomato</div>
+                <div class="price-value">₹1,500 <span style="font-size:1rem;color:var(--text-muted)">/ Qtl</span></div>
+                <div class="price-trend negative">▼ -5.2%</div>
+            </div>
+            <div class="price-card glass">
+                <div class="price-header">Cotton (Hatti)</div>
+                <div class="price-value">₹7,100 <span style="font-size:1rem;color:var(--text-muted)">/ Qtl</span></div>
+                <div class="price-trend positive">▲ +0.8%</div>
             </div>
         </div>
     </section>
